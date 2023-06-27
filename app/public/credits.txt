@@ -1,0 +1,5 @@
+Exchange Rates API
+https://exchangeratesapi.io/
+
+Country flags from: countryflags.com
+https://www.countryflags.com/icons-overview/

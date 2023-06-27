@@ -1,0 +1,22 @@
+#annotations {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+#annotations p {
+    font-family: monospace;
+    color: white;
+    display: inline;
+    font-size: 16px;
+}
+
+a:link {
+    color: rgb(63, 140, 255);
+}
+
+a:visited {
+    color: plum;
+}

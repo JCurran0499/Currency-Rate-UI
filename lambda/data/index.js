@@ -66,5 +66,3 @@ export const handler = (e) => {
     })
     request.end()
 }
-
-handler(null)
