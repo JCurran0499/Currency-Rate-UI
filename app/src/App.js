@@ -7,7 +7,7 @@ function App() {
 
 
   return (
-    <div className="App">
+    <div id="App">
       <Title/>
       <CurrencyRates/>
       <Annotations/>

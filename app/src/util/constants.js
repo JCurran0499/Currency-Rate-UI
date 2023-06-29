@@ -1,0 +1,1 @@
+export const api_gateway_endpoint = 'https://x7d34ehwne.execute-api.us-east-1.amazonaws.com'

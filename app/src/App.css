@@ -1,10 +1,13 @@
-.App {
+@import 'util/constants.css';
+
+#App {
   text-align: center;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-top: 1%;
+  padding-left: 2%;
+  padding-right: 2%;
 }
 
 body {
-  background-color: #282828;
+  background-color: var(--background-color);
 }
 

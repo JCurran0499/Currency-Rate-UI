@@ -1,9 +1,11 @@
+@import '../../util/constants.css';
+
 #annotations {
     position: fixed;
     bottom: 0;
     left: 0;
-    padding-left: 10px;
-    padding-bottom: 10px;
+    padding: 10px 10px 10px 10px;
+    background-color: var(--background-color);
 }
 
 #annotations p {
