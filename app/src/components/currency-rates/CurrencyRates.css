@@ -2,20 +2,5 @@
     margin-top: 50px;
     margin-bottom: 50px;
     padding: 0px 0px 0px 0px;
-    border: 0px solid blue;
-}
-
-.rates-block {
     border: 0px solid red;
-    width: 42%;
-    display: inline-block;
-    vertical-align: top;
-}
-
-.rates-block.left {
-    margin-right: 4%;
-}
-
-.rates-block.right {
-    margin-left: 4%;
 }

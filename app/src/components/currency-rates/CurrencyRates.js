@@ -8,6 +8,8 @@ export const CurrencyRates = () => {
     const [rates, handleRates] = useState({})
     const [rows, handleRows] = useState([])
 
+    let symbols = []
+
 
     const calculateChange = (country_code) => {
         const now = 1 / rates.now[country_code]
@@ -26,22 +28,31 @@ export const CurrencyRates = () => {
     }, [])
 
     useEffect(() => {
+        console.log('hello!')
+
         makeRequest('/rates')
             .then((resp) => handleRates(resp.data))
     }, [countries])
 
     useEffect(() => {
+        for (let symbol in rates.now) {
+            symbols = [...symbols, symbol]
+        }
+        console.log(symbols)
+
         let rows_new = []
 
-        let r, k
-        for (let country_code in rates.now) {
+        let code1, code2, r, k
+        for (let i = 0; i < symbols.length; i += 2) {
+            code1 = symbols[i]
+            code2 = symbols[i + 1]
             k = rows_new.length
             r = <CountryRow 
                     key={k} 
-                    code={country_code}
-                    country={countries[country_code]}
-                    rate={1 / rates.now[country_code]}
-                    change={calculateChange(country_code)}
+                    code={[code1, code2]}
+                    country={[countries[code1], countries[code2]]}
+                    rate={[1 / rates.now[code1], 1 / rates.now[code2]]}
+                    change={[calculateChange(code1), calculateChange(code2)]}
                 />
             rows_new = [...rows_new, r]
         }
@@ -51,12 +62,7 @@ export const CurrencyRates = () => {
 
     return (
         <div id="currency-rates">
-            <div className="rates-block left">
-                {rows.slice(0, rows.length / 2)}
-            </div>
-            <div className="rates-block right">
-                {rows.slice(rows.length / 2, rows.length)}
-            </div>
+            {rows}
         </div>
     )
 }
