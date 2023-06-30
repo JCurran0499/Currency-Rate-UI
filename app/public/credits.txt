@@ -3,3 +3,13 @@ https://exchangeratesapi.io/
 
 Country flags from: countryflags.com
 https://www.countryflags.com/icons-overview/
+
+Image cropping from: https://www2.lunapic.com/editor/
+
+
+Miscellaneous flags
+https://www.britannica.com/topic/flag-of-the-Isle-of-Man
+https://www.britannica.com/topic/flag-of-Bermuda
+https://en.wikipedia.org/wiki/Bitcoin
+https://www.canva.com/colors/color-meanings/gold/
+https://www.canva.com/colors/color-meanings/silver/

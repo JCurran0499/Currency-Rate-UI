@@ -1,6 +1,6 @@
 import { CountryRow } from '../country-row/CountryRow'
 import { useState, useEffect } from 'react'
-import { makeRequest, round } from '../../util/services'
+import { makeRequest } from '../../util/services'
 import './CurrencyRates.css'
 
 export const CurrencyRates = () => {
@@ -14,7 +14,7 @@ export const CurrencyRates = () => {
         const start = 1 / rates.start[country_code]
         let change = now - start
         change = (change / start) * 100
-        return round(change)
+        return change
     }
 
     /* Waterfall Effect */
@@ -40,7 +40,7 @@ export const CurrencyRates = () => {
                     key={k} 
                     code={country_code}
                     country={countries[country_code]}
-                    rate={round(1 / rates.now[country_code])}
+                    rate={1 / rates.now[country_code]}
                     change={calculateChange(country_code)}
                 />
             rows_new = [...rows_new, r]

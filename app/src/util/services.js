@@ -8,6 +8,7 @@ export const makeRequest = (route) => {
     })
 }
 
-export const round = (num) => {
-    return Math.round(num * 100) / 100
+export const round = (num, degree) => {
+    const factor = Math.pow(10, degree)
+    return Math.round(num * factor) / factor
 }

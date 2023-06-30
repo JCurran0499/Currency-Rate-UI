@@ -41,7 +41,7 @@ def get_latest_rates():
         now = now - timedelta(hours=1)
 
     now = now - timedelta(minutes=now.minute % 60)
-    start = now - timedelta(hours=now.hour % 24)
+    start = now - timedelta(days=1)
 
     items = dynamodb.batch_get_item(
         RequestItems={
