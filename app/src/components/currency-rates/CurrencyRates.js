@@ -1,4 +1,5 @@
 import { CountryRow } from '../country-row/CountryRow'
+import { Header } from '../header/Header'
 import { useState, useEffect } from 'react'
 import { makeRequest } from '../../util/services'
 import './CurrencyRates.css'
@@ -48,7 +49,7 @@ export const CurrencyRates = () => {
             code2 = symbols[i + 1]
             k = rows_new.length
             r = <CountryRow 
-                    key={k} 
+                    key={k}
                     code={[code1, code2]}
                     country={[countries[code1], countries[code2]]}
                     rate={[1 / rates.now[code1], 1 / rates.now[code2]]}
@@ -62,6 +63,7 @@ export const CurrencyRates = () => {
 
     return (
         <div id="currency-rates">
+            <Header/>
             {rows}
         </div>
     )

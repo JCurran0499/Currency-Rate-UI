@@ -1,6 +1,6 @@
-@import 'util/constants.css';
+@import '../../util/constants.css';
 
-#App {
+#Home {
   text-align: center;
   padding-top: 1%;
   padding-left: 2%;
@@ -10,4 +10,3 @@
 body {
   background-color: var(--background-color);
 }
-

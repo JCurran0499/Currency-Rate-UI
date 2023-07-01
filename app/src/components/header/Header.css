@@ -1,35 +1,21 @@
 @import '../../util/constants.css';
 
-#country-row {
+header {
     text-align: center;
     width: 100%;
     display: table;
     border: 0px solid green;
 }
 
-#country {
+#subheader {
     display: inline-block;
     height: 100%;
     vertical-align: middle;
     width: 44%;
 }
 
-img {
-    height: 100%;
-    vertical-align: middle;
-}
 
-button {
-    height: 40px;
-    width: 40px;
-    margin: 0;
-    padding: 0;
-    border: none;
-    background-color: inherit;
-    cursor: pointer;
-}
-
-.info {
+.column {
     color: white;
     text-align: right;
     vertical-align: middle;
@@ -40,55 +26,47 @@ button {
     border: 0px solid green;
 }
 
-.info > p {
+.column > p {
     font-size: 20px;
+    font-weight: bold;
 }
 
 /* Spacing */
 
-#country.left {
+#subheader.left {
     margin-right: 4%;
 }
 
-#country.right {
+#subheader.right {
     margin-left: 4%;
 }
 
-
-.info.flag {
+.column.flag {
     text-align: center;
     width: var(--width-flag);
     vertical-align: middle;
 }
 
-.info.code {
+.column.code {
     width: var(--width-code);
     text-align: left;
 }
 
-.info.name {
+.column.name {
     width: var(--width-name);
     text-align: left;
 }
 
-.info.rate {
+.column.rate {
     width: var(--width-rate);
 }
 
-.info.change {
+.column.change {
     width: var(--width-change);
 }
 
-.info.arrow {
+.column.arrow {
     width: var(--width-arrow);
+    color: var(--background-color);
 }
 
-/* Colors */
-
-.info.up {
-    color: green;
-}
-
-.info.down {
-    color: red;
-}

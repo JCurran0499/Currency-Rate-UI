@@ -4,7 +4,7 @@ import './CountryRow.css'
 
 export const CountryRow = (props) => {
     const img_srcs = ["flags/" + props.code[0] + ".png", "flags/" + props.code[1] + ".png"]
-    const upTrends = [!(props.change[0] < 0), !(props.change[0] < 0)]
+    const upTrends = [!(props.change[0] < 0), !(props.change[1] < 0)]
 
     const display = (n) => {
         let d = 2
@@ -17,72 +17,63 @@ export const CountryRow = (props) => {
         return n_display
     }
 
+    const Country = (props) => {
+        return (
+            <div id="country" className={props.className}>
+                <div className="info flag">
+                    <button>
+                        <img src={props.img_src}/>
+                    </button>
+                </div>
+
+                <div className="info code">
+                    <p>{props.code}</p>
+                </div>
+
+                <div className="info name">
+                    <p>{props.country}</p>
+                </div>
+
+                <div className="info rate">
+                    <p>{display(props.rate)} &euro;</p>
+                </div>
+
+                <div className={"info change " + (props.upTrends ? "up" : "down")}>
+                    <p>{display(props.change)} %</p>
+                </div>
+
+                <div className={"info arrow " + (props.upTrends ? "up" : "down")}>
+                    {(props.upTrends) && 
+                        <AiOutlineArrowUp/>
+                    }
+                    {(!props.upTrends) &&
+                        <AiOutlineArrowDown/>
+                    }
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div id="country-row">
-            <div className="country left">
-                <div className="info flag">
-                    <button>
-                        <img src={img_srcs[0]}/>
-                    </button>
-                </div>
-
-                <div className="info code">
-                    <p>{props.code[0]}</p>
-                </div>
-
-                <div className="info name">
-                    <p>{props.country[0]}</p>
-                </div>
-
-                <div className="info rate">
-                    <p>{display(props.rate[0])} &euro;</p>
-                </div>
-
-                <div className={"info change " + (upTrends[0] ? "up" : "down")}>
-                    <p>{display(props.change[0])} %</p>
-                </div>
-
-                <div className={"info arrow " + (upTrends[0] ? "up" : "down")}>
-                    {(upTrends[0]) && 
-                        <AiOutlineArrowUp/>
-                    }
-                    {(!upTrends[0]) &&
-                        <AiOutlineArrowDown/>
-                    }
-                </div>
-            </div>
-            <div className="country right">
-                <div className="info flag">
-                    <button>
-                        <img src={img_srcs[1]}/>
-                    </button>
-                </div>
-
-                <div className="info code">
-                    <p>{props.code[1]}</p>
-                </div>
-
-                <div className="info name">
-                    <p>{props.country[1]}</p>
-                </div>
-
-                <div className="info rate">
-                    <p>{display(props.rate[1])} &euro;</p>
-                </div>
-
-                <div className={"info change " + (upTrends[1] ? "up" : "down")}>
-                    <p>{display(props.change[1])} %</p>
-                </div>
-
-                <div className={"info arrow " + (upTrends[1] ? "up" : "down")}>
-                    {(upTrends[1]) && 
-                        <AiOutlineArrowUp/>
-                    }
-                    {(!upTrends[1]) &&
-                        <AiOutlineArrowDown/>
-                    }
-                </div>
-            </div>
+            <Country 
+                className={"left " + props.code[0]}
+                img_src={img_srcs[0]}
+                code={props.code[0]}
+                country={props.country[0]}
+                rate={props.rate[0]}
+                change={props.change[0]}
+                upTrends={upTrends[0]}
+            />
+            <Country 
+                className={"right " + props.code[1]}
+                img_src={img_srcs[1]}
+                code={props.code[1]}
+                country={props.country[1]}
+                rate={props.rate[1]}
+                change={props.change[1]}
+                upTrends={upTrends[1]}
+            />
         </div>
     )
 }

@@ -1,17 +1,15 @@
-import { Annotations } from './components/annotations/Annotations'
-import { Title } from './components/title/Title'
-import { CurrencyRates } from './components/currency-rates/CurrencyRates';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Home } from './routes/home/Home'
+import { PageNotFound } from './routes/page-not-found/PageNotFound'
 
 function App() {
-
-
   return (
-    <div id="App">
-      <Title/>
-      <CurrencyRates/>
-      <Annotations/>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="*" element={<PageNotFound/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
