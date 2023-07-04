@@ -2,15 +2,12 @@ import { CountryRow } from '../country-row/CountryRow'
 import { Header } from '../header/Header'
 import { useState, useEffect } from 'react'
 import { makeRequest } from '../../util/services'
+import { symbols, codes } from '../../util/constants'
 import './CurrencyRates.css'
 
 export const CurrencyRates = () => {
-    const [countries, handleCountries] = useState({})
     const [rates, handleRates] = useState({})
     const [rows, handleRows] = useState([])
-
-    let symbols = []
-
 
     const calculateChange = (country_code) => {
         const now = 1 / rates.now[country_code]
@@ -21,44 +18,34 @@ export const CurrencyRates = () => {
     }
 
     /* Waterfall Effect */
-    /* Update countries > Update rates > Update HTML rows */
+    /* Update rates > Update HTML rows */
 
     useEffect(() => {
-        makeRequest('/symbols')
-            .then((resp) => handleCountries(resp.data))
+        makeRequest('/rates')
+            .then((resp) => handleRates(resp.data))
     }, [])
 
     useEffect(() => {
-        console.log('hello!')
+        if (rates.now !== undefined) {
+            let rows_new = []
 
-        makeRequest('/rates')
-            .then((resp) => handleRates(resp.data))
-    }, [countries])
+            let code1, code2, r, k
+            for (let i = 0; i < codes.length; i += 2) {
+                code1 = codes[i]
+                code2 = codes[i + 1]
+                k = rows_new.length
+                r = <CountryRow 
+                        key={k}
+                        code={[code1, code2]}
+                        country={[symbols[code1], symbols[code2]]}
+                        rate={[1 / rates.now[code1], 1 / rates.now[code2]]}
+                        change={[calculateChange(code1), calculateChange(code2)]}
+                    />
+                rows_new = [...rows_new, r]
+            }
 
-    useEffect(() => {
-        for (let symbol in rates.now) {
-            symbols = [...symbols, symbol]
+            handleRows(rows_new)
         }
-        console.log(symbols)
-
-        let rows_new = []
-
-        let code1, code2, r, k
-        for (let i = 0; i < symbols.length; i += 2) {
-            code1 = symbols[i]
-            code2 = symbols[i + 1]
-            k = rows_new.length
-            r = <CountryRow 
-                    key={k}
-                    code={[code1, code2]}
-                    country={[countries[code1], countries[code2]]}
-                    rate={[1 / rates.now[code1], 1 / rates.now[code2]]}
-                    change={[calculateChange(code1), calculateChange(code2)]}
-                />
-            rows_new = [...rows_new, r]
-        }
-
-        handleRows(rows_new)
     }, [rates])
 
     return (
