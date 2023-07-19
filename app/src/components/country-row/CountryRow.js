@@ -1,4 +1,6 @@
 import { AiOutlineArrowUp, AiOutlineArrowDown } from 'react-icons/ai'
+import { useState } from 'react'
+import { Navigate } from "react-router-dom"
 import { round } from '../../util/services'
 import './CountryRow.css'
 
@@ -18,10 +20,15 @@ export const CountryRow = (props) => {
     }
 
     const Country = (props) => {
+        const [redirect, handleRedirect] = useState(false)
+        
         return (
             <div id="country" className={props.className}>
+                {redirect && (
+                    <Navigate to={"/" + props.code}/>
+                )}
                 <div className="info flag">
-                    <button>
+                    <button onClick={() => handleRedirect(true)}>
                         <img src={props.img_src}/>
                     </button>
                 </div>
