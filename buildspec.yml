@@ -2,9 +2,10 @@ version: 0.2
 phases:
   build:
     commands:
+       - cd app
        - npm install
        - npm run build
 artifacts:
   files:
     - '**/*'
-  base-directory: 'build'
+  base-directory: 'app/build'
