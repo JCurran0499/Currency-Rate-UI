@@ -6,22 +6,14 @@ from dateutil import tz
 dynamodb = boto3.client('dynamodb')
 
 def lambda_handler(event, context):
-    if (event['rawPath'] == '/rates'):
+    if (event['rawPath'] == '/latest'):
         return {
             'statusCode': 200,
             'headers': {
                 'Content-Type': 'application/json'
             },
             'body': get_latest_rates()
-        }
-    
-    else:
-        return {
-            'statusCode': 404,
-            'body': json.dumps({
-                'message': 'invalid route'
-            })
-        }
+        }    
 
 
 # Helper Methods

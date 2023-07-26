@@ -21,7 +21,7 @@ export const CurrencyRates = () => {
     /* Update rates > Update HTML rows */
 
     useEffect(() => {
-        makeRequest('/rates')
+        makeRequest('/latest')
             .then((resp) => handleRates(resp.data))
     }, [])
 
