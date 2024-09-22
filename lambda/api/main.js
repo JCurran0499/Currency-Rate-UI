@@ -8,5 +8,5 @@ api.get("/latest", latest)
 api.get("/historical", historical)
 
 export const handler = async (event) => {
-    return api.resolve(event)
+    return await api.resolve(event)
 }

@@ -82,7 +82,7 @@ Resources:
     Properties:
       Architectures:
         - arm64
-      CodeUri: ./lambda/apiv2
+      CodeUri: ./lambda/api
       Description: Exchange Rate UI backend
       FunctionName: !Sub ${AppName}-API
       Handler: main.handler

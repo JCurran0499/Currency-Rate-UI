@@ -1,4 +1,4 @@
-export const api_gateway_endpoint = 'https://x7d34ehwne.execute-api.us-east-1.amazonaws.com'
+export const api_gateway_endpoint = 'https://uin1bo6bk5.execute-api.us-east-1.amazonaws.com'
 
 export const symbols = {
     "EUR": "Euro",

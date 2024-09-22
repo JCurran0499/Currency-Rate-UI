@@ -20,7 +20,8 @@ const upload_data = async (json) => {
     }
     const itemLatest = {
         timestamp: {S: 'latest'},
-        base: {S: json.base}
+        base: {S: json.base},
+        ts: {S: eventDate.toISOString().slice(0, 16) + "Z"}
     }
 
     for (let symbol in json.rates) {
