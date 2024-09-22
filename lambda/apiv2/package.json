@@ -1,0 +1,12 @@
+{
+  "name": "exchange-rates-api",
+  "version": "1.0.0",
+  "description": "Exchange Rates API backend",
+  "main": "main.js",
+  "author": "Jack Curran",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.637.0",
+    "@aws-sdk/util-dynamodb": "^3.637.0"
+  },
+  "type": "module"
+}

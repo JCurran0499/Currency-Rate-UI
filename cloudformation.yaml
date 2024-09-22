@@ -1,0 +1,225 @@
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Resources for the Currency Rate UI
+
+Parameters:
+  Owner:
+    Type: String
+    Default: jack
+
+  Project:
+    Type: String
+    Default: Exchange-Rates
+
+  AppName:
+    Type: String
+    Default: Exchange-Rates
+
+Resources:
+  # IAM
+  APILambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonDynamoDBReadOnlyAccess
+        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+      RoleName: !Sub Lambda-${AppName}-api
+      Tags:
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Project
+          Value: !Ref Project
+
+  DataLambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+      RoleName: !Sub Lambda-${AppName}-data
+      Tags:
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Project
+          Value: !Ref Project
+
+  SchedulerExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: scheduler.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+      RoleName: !Sub EventBridge-${AppName}
+      Tags:
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Project
+          Value: !Ref Project
+
+  # Lambda
+  APILambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures:
+        - arm64
+      CodeUri: ./lambda/apiv2
+      Description: Exchange Rate UI backend
+      FunctionName: !Sub ${AppName}-API
+      Handler: main.handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ExchangeRateTable
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ExchangeRateAPI
+            Method: ANY
+            Path: /{path+}
+            PayloadFormatVersion: "2.0"
+      MemorySize: 512
+      Runtime: nodejs20.x
+      Role: !GetAtt APILambdaExecutionRole.Arn
+      Timeout: 15
+      Tags:
+        Owner: !Ref Owner
+        Project: !Ref Project
+
+  DataLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures:
+        - arm64
+      CodeUri: ./lambda/data
+      Description: Exchange Rate scheduled updates
+      FunctionName: !Sub ${AppName}-Data
+      Handler: index.handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ExchangeRateTable
+          API_KEY: currency_exchange_api_access_key
+      MemorySize: 128
+      Runtime: nodejs20.x
+      Role: !GetAtt DataLambdaExecutionRole.Arn
+      Timeout: 300
+      Tags:
+        Owner: !Ref Owner
+        Project: !Ref Project
+
+  # DynamoDB
+  ExchangeRateTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: timestamp
+          AttributeType: S
+        - AttributeName: base
+          AttributeType: S
+      KeySchema:
+        - AttributeName: timestamp
+          KeyType: HASH
+        - AttributeName: base
+          KeyType: RANGE
+      BillingMode: PROVISIONED
+      DeletionProtectionEnabled: true
+      ImportSourceSpecification:
+        InputCompressionType: GZIP
+        InputFormat: DYNAMODB_JSON
+        S3BucketSource:
+          S3Bucket: currency-exchange-db-data
+          S3KeyPrefix: AWSDynamoDB/01726956845040-ee9af4ab/data
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 1
+      TableClass: STANDARD
+      TableName: !Ref AppName
+      Tags:
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Project
+          Value: !Ref Project
+
+  # API Gateway
+  ExchangeRateAPI:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Description: Triggers the Lambda that manages the Exchange Rate backend
+      Name: !Sub ${AppName}-API
+      ProtocolType: HTTP
+      Tags:
+        Owner: !Ref Owner
+        Project: !Ref Project
+
+  ExchangeRateAPIStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref ExchangeRateAPI
+      AutoDeploy: true
+      StageName: $default
+      Tags:
+        Owner: !Ref Owner
+        Project: !Ref Project
+
+  ExchangeRateAPIIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref ExchangeRateAPI
+      Description: Integrating the Exchange Rate backend API with the managing lambda
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Join
+        - ""
+        - - "arn:"
+          - !Ref AWS::Partition
+          - ":apigateway:"
+          - !Ref AWS::Region
+          - ":lambda:path/2015-03-31/functions/"
+          - !GetAtt APILambda.Arn
+          - /invocations
+      PayloadFormatVersion: "2.0"
+
+  ExchangeRateAPIRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ExchangeRateAPI
+      AuthorizationType: NONE
+      RouteKey: ANY /{path+}
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref ExchangeRateAPIIntegration
+
+  # EventBridge
+  DataUpdateScheduler:
+    Type: AWS::Scheduler::Schedule
+    Properties:
+      Description: Invokes the Data lambda on a scheduled basis
+      FlexibleTimeWindow:
+        Mode: "OFF"
+      Name: !Ref AppName
+      ScheduleExpression: rate(3 hours)
+      StartDate: "2024-09-21T23:05:00.000Z"
+      State: ENABLED
+      Target:
+        Arn: !GetAtt DataLambda.Arn
+        Input: "{}"
+        RoleArn: !GetAtt SchedulerExecutionRole.Arn
