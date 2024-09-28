@@ -1,7 +1,7 @@
 import { CountryRow } from '../country-row/CountryRow'
 import { Header } from '../header/Header'
 import { useState, useEffect } from 'react'
-import { makeRequest } from '../../util/services'
+import { makeRequest, calculateChange } from '../../util/services'
 import { symbols, codes } from '../../util/constants'
 import './CurrencyRates.css'
 
@@ -9,13 +9,6 @@ export const CurrencyRates = () => {
     const [rates, handleRates] = useState({})
     const [rows, handleRows] = useState([])
 
-    const calculateChange = (country_code) => {
-        const now = 1 / rates.now[country_code]
-        const start = 1 / rates.start[country_code]
-        let change = now - start
-        change = (change / start) * 100
-        return change
-    }
 
     /* Waterfall Effect */
     /* Update rates > Update HTML rows */
@@ -39,7 +32,7 @@ export const CurrencyRates = () => {
                         code={[code1, code2]}
                         country={[symbols[code1], symbols[code2]]}
                         rate={[1 / rates.now[code1], 1 / rates.now[code2]]}
-                        change={[calculateChange(code1), calculateChange(code2)]}
+                        change={[calculateChange(rates, code1), calculateChange(rates, code2)]}
                     />
                 rows_new = [...rows_new, r]
             }
