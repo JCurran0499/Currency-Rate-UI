@@ -1,0 +1,12 @@
+name: Currency UI Deployment
+on:
+  push:
+    - main
+
+jobs:
+  build_web_app:
+    name: Build Web App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print
+        run: echo Hello World!
