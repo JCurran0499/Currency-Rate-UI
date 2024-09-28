@@ -5,6 +5,9 @@ on:
     types:
       - opened
       - edited
+    paths:
+      - .github/workflows/deploy_ui.yaml
+      - app/**/*
   push:
     branches:
       - main
