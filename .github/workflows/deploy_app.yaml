@@ -43,9 +43,9 @@ jobs:
         with:
           path: "."
 
-      - run: ls artifact -a
-
       - name: Build
-        run: sam build -t cloudformation.yaml
+        run: |
+          cd artifact
+          sam build -t cloudformation.yaml
 
       - run: ls artifact -a
