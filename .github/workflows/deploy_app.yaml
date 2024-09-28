@@ -33,7 +33,7 @@ jobs:
     needs: install_dependencies
     runs-on: ubuntu-latest
     env:
-      S3_BUCKET: ${{ env.S3_BUCKET }}
+      S3_BUCKET: ${{ vars.S3_BUCKET }}
     steps:
       - uses: aws-actions/configure-aws-credentials@v4
         with:
