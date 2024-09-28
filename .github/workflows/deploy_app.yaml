@@ -32,6 +32,8 @@ jobs:
     name: Deploy Cloudformation
     needs: install_dependencies
     runs-on: ubuntu-latest
+    env:
+      S3_BUCKET: ${{ env.S3_BUCKET }}
     steps:
       - uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -48,4 +50,7 @@ jobs:
           cd artifact
           sam build -t cloudformation.yaml
 
-      - run: ls artifact/lambda/api
+      - name: Deploy
+        run: |
+          cd artifact
+          sam deploy -t cloudformation.yaml --stack-name Exchange-Rates --capabilities CAPABILITY_NAMED_IAM --s3-bucket $S3_BUCKET
