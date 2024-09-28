@@ -16,8 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - run: mv .env .env.local
-      - run: mv .env.prod .env
+      - name: Env
+        run: |
+          cd app
+          mv .env .env.local
+          mv .env.prod .env
 
       - name: Build
         run: |
