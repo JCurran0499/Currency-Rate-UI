@@ -3,8 +3,11 @@ run-name: Currency UI run ${{ github.run_id }}
 on:
   push:
     branches:
-      - master
+      - main
       - development
+    paths:
+      - .github/workflows/deploy_ui.yaml
+      - app/**/*
 
 jobs:
   build_web_app:
@@ -21,11 +24,10 @@ jobs:
 
       - uses: actions/upload-artifact@master
         with:
-          name: app-artifact
           path: app
 
-  download_web_app:
-    name: Download Web App
+  deploy_web_app:
+    name: Deploy Web App
     needs: build_web_app
     runs-on: ubuntu-latest
     steps:
@@ -37,7 +39,6 @@ jobs:
       
       - uses: actions/download-artifact@master
         with:
-          name: app-artifact
           path: artifact
 
       - run: aws s3 sync artifact/build s3://currency-exchange-static-ui --delete
