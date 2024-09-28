@@ -100,7 +100,7 @@ Resources:
       MemorySize: 512
       Runtime: nodejs20.x
       Role: !GetAtt APILambdaExecutionRole.Arn
-      Timeout: 150
+      Timeout: 15
       Tags:
         Owner: !Ref Owner
         Project: !Ref Project
