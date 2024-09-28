@@ -1,5 +1,5 @@
 name: Currency UI Deployment
-run-name: Currency UI ${{ github.run_id }}
+run-name: Currency UI run ${{ github.run_id }}
 on:
   push:
     branches:
@@ -10,8 +10,13 @@ jobs:
   build_web_app:
     name: Build Web App
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
     steps:
       - uses: actions/checkout@master
+      
+      - run: aws s3 ls s3://curran-unity-games
 
       - name: Build
         run: |
