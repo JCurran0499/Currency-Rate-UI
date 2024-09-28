@@ -13,8 +13,8 @@ jobs:
       - uses: actions/checkout@master
 
       - run: |
-        cd app
-        npm run build
+          cd app
+          npm run build
 
       - uses: actions/upload-artifact@master
         with:
