@@ -38,6 +38,7 @@ const upload_data = async (json) => {
     }))
 }
 
+// https://manage.exchangeratesapi.io
 export const handler = () => {
     axios({
         baseURL: 'http://api.exchangeratesapi.io',

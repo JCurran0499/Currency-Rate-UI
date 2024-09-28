@@ -7,6 +7,7 @@ const BLOCK = 50
 
 const getRecords = async (timestamps, code) => {
     console.info("Fetching records!")
+
     const request = {
         RequestItems: {}
     }
@@ -25,7 +26,7 @@ const getRecords = async (timestamps, code) => {
     }
 
     const resp = await dynamodb.send(new BatchGetItemCommand(request))
-    return resp.Responses[process.env.TABLE_NAME].map(unmarshall)
+    return resp.Responses[process.env.TABLE_NAME].map(unmarshall).sort((ts1, ts2) => ts1.timestamp.localeCompare(ts2.timestamp))
 }
 
 export const historical = async (req) => {
@@ -43,6 +44,8 @@ export const historical = async (req) => {
         timestamps.push(formatTimestamp(start))
         start.setHours(start.getHours() + (period * 3))
     }
+
+    console.log(timestamps)
 
     const promises = []
     while (timestamps.length > BLOCK) {

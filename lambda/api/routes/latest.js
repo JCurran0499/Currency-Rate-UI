@@ -51,6 +51,8 @@ export const latest = async (req) => {
     })
 
     const resp = await dynamodb.send(tableReq)
+    resp.Responses[process.env.TABLE_NAME].sort((i1, _) => (i1.timestamp.S === 'latest') ? -1 : 1)
+    
     let itemNow = resp.Responses[process.env.TABLE_NAME][0]
     let itemStart = resp.Responses[process.env.TABLE_NAME][1]
 
