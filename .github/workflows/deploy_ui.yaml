@@ -1,10 +1,16 @@
 name: Currency UI Deployment
 run-name: Currency UI run ${{ github.run_id }}
 on:
+  pull_request:
+    types:
+      - opened
+      - edited
   push:
     branches:
       - main
-      - development
+    paths:
+      - .github/workflows/deploy_ui.yaml
+      - app/**/*
 
 jobs:
   build_web_app:
