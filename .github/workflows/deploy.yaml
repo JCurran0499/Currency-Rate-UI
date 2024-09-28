@@ -10,6 +10,7 @@ jobs:
     name: Build Web App
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@master
       - run: mkdir artifact
       - run: ls
 
@@ -21,6 +22,7 @@ jobs:
 
   download_web_app:
     name: Download Web App
+    needs: build_web_app
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@master
