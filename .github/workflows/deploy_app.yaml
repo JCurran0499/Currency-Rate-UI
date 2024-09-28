@@ -46,4 +46,4 @@ jobs:
         with:
           path: "."
 
-      - run: ls artifact
+      - run: ls artifact -a
