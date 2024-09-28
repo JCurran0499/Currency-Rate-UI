@@ -10,4 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo Hello World! > test.txt
+      - uses: actions/upload-artifact@master
+        with:
+          name: my-artifact
+          path: path/to/artifact
+
+  download_web_app:
+    name: Download Web App
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: my-artifact
+          path: path/to/artifact
       - run: cat test.txt
