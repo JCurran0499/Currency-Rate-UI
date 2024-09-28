@@ -30,7 +30,7 @@ jobs:
 
   deploy_cloudformation:
     name: Deploy Cloudformation
-    needs: build_cloudformation
+    needs: install_dependencies
     runs-on: ubuntu-latest
     steps:
       - uses: aws-actions/configure-aws-credentials@v4
