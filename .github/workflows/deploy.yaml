@@ -3,7 +3,7 @@ run-name: Currency UI run ${{ github.run_id }}
 on:
   push:
     branches:
-      - master
+      - main
       - development
 
 jobs:
