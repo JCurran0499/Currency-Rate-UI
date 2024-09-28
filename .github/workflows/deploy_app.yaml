@@ -1,34 +1,39 @@
-name: Currency UI Deployment
-run-name: Currency UI run ${{ github.run_id }}
+name: Currency Data App Deployment
+run-name: Currency App run ${{ github.run_id }}
 on:
   push:
     branches:
       - main
       - development
     paths:
-      - .github/workflows/deploy_ui.yaml
-      - app/**/*
+      - .github/workflows/deploy_app.yaml
+      - lambda/**/*
+      - cloudformation.yaml
 
 jobs:
-  build_web_app:
-    name: Build Web App
+  build_cloudformation:
+    name: Build Cloudformation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
 
-      - name: Build
+      - name: Install Dependencies
         run: |
-          cd app
+          cd lambda/api
           npm install
-          npm run build
+          cd ../data
+          npm install
+
+      - name: Build
+        run: sam build -t cloudformation.yaml
 
       - uses: actions/upload-artifact@master
         with:
-          path: app
+          path: "."
 
-  deploy_web_app:
-    name: Deploy Web App
-    needs: build_web_app
+  deploy_cloudformation:
+    name: Deploy Cloudformation
+    needs: build_cloudformation
     runs-on: ubuntu-latest
     steps:
       - uses: aws-actions/configure-aws-credentials@v4
@@ -39,6 +44,6 @@ jobs:
       
       - uses: actions/download-artifact@master
         with:
-          path: artifact
+          path: "."
 
-      - run: aws s3 sync artifact/build s3://currency-exchange-static-ui --delete
+      - run: ls
