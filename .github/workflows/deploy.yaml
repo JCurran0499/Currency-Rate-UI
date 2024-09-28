@@ -1,5 +1,5 @@
 name: Currency UI Deployment
-run-name: Currency UI {{ github.run_id }}
+run-name: Currency UI ${{ github.run_id }}
 on:
   push:
     branches:
@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: mkdir artifact
-      - run: ls
 
-      - run: echo Hello World! > artifact/test.txt
+      - run: cd app
+      - run: npm run build
+
       - uses: actions/upload-artifact@master
         with:
-          name: my-artifact
-          path: artifact
+          name: app-artifact
+          path: app
 
   download_web_app:
     name: Download Web App
@@ -27,6 +27,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@master
         with:
-          name: my-artifact
-          path: path/to/artifact
-      - run: cat path/to/artifact/test.txt
+          name: app-artifact
+          path: artifact
+      
+      - run: ls artifact/build
