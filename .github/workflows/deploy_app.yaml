@@ -11,8 +11,8 @@ on:
       - cloudformation.yaml
 
 jobs:
-  build_cloudformation:
-    name: Build Cloudformation
+  install_dependencies:
+    name: Install Dependencies
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -23,9 +23,6 @@ jobs:
           npm install
           cd ../data
           npm install
-
-      - name: Build
-        run: sam build -t cloudformation.yaml
 
       - uses: actions/upload-artifact@master
         with:
@@ -45,5 +42,8 @@ jobs:
       - uses: actions/download-artifact@master
         with:
           path: "."
+
+      - name: Build
+        run: sam build -t cloudformation.yaml
 
       - run: ls artifact -a
