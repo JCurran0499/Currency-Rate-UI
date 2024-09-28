@@ -9,11 +9,12 @@ jobs:
     name: Build Web App
     runs-on: ubuntu-latest
     steps:
-      - run: echo Hello World! > test.txt
+      - run: mkdir artifact
+      - run: echo Hello World! > artifact/test.txt
       - uses: actions/upload-artifact@master
         with:
           name: my-artifact
-          path: path/to/artifact
+          path: artifact
 
   download_web_app:
     name: Download Web App
@@ -23,4 +24,4 @@ jobs:
         with:
           name: my-artifact
           path: path/to/artifact
-      - run: cat test.txt
+      - run: cat path/to/artifact/test.txt
