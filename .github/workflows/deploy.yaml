@@ -1,7 +1,8 @@
 name: Currency UI Deployment
 on:
   push:
-    - master
+    branches:
+      - master
 
 jobs:
   build_web_app:
