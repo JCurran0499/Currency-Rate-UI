@@ -1,10 +1,9 @@
 @import '../../util/constants.css';
 
-header {
+#header {
     text-align: center;
     width: 100%;
     display: table;
-    border: 0px solid green;
 }
 
 #subheader {
@@ -14,8 +13,7 @@ header {
     width: 44%;
 }
 
-
-.column {
+#subheader > .column {
     color: white;
     text-align: right;
     vertical-align: middle;
@@ -23,10 +21,9 @@ header {
     padding-right: 5px;
     padding-left: 5px;
     display: table-cell;
-    border: 0px solid green;
 }
 
-.column > p {
+#subheader > .column > p {
     font-size: 20px;
     font-weight: bold;
 }
@@ -41,32 +38,29 @@ header {
     margin-left: 4%;
 }
 
-.column.flag {
-    text-align: center;
+#subheader > .column.flag {
     width: var(--width-flag);
-    vertical-align: middle;
 }
 
-.column.code {
+#subheader > .column.code {
     width: var(--width-code);
     text-align: left;
 }
 
-.column.name {
+#subheader > .column.name {
     width: var(--width-name);
     text-align: left;
 }
 
-.column.rate {
+#subheader > .column.rate {
     width: var(--width-rate);
 }
 
-.column.change {
+#subheader > .column.change {
     width: var(--width-change);
 }
 
-.column.arrow {
+#subheader > .column.arrow {
     width: var(--width-arrow);
     color: var(--background-color);
 }
-

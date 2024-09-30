@@ -1,9 +1,9 @@
 import { useParams, Navigate } from 'react-router-dom'
 import { symbols, codes } from '../../util/constants'
-import { Line, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts'
-import './Country.css'
+import { Line, LineChart, XAxis, YAxis } from 'recharts'
+import './CountryPage.css'
 
-export const Country = () => {
+export const CountryPage = () => {
     const params = useParams()
 
     const data = [
@@ -39,12 +39,12 @@ export const Country = () => {
       
 
     return (
-        <div id="Country">
+        <div id="CountryPage">
             {(!codes.includes(params.code)) && (
                 <Navigate to="/"/>
             )}
             <h1>{symbols[params.code]}</h1>
-            <img src={"flags/" + params.code + ".png"}/>
+            <img src={"flags/" + params.code + ".png"} alt={params.code}/>
 
             <LineChart width={730} height={250} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <XAxis dataKey="name" />

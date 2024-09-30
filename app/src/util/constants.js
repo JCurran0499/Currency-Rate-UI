@@ -11,15 +11,11 @@ export const symbols = {
     "CHF": "Swiss Franc",
     "HKD": "Hong Kong Dollar",
     "SGD": "Singapore Dollar",
-    "BTC": "Bitcoin",
-    "XAG": "Silver (troy ounce)",
     "KRW": "South Korean Won",
-    "XAU": "Gold (troy ounce)",
     "SEK": "Swedish Krona",
     "NOK": "Norwegian Krone",
     "INR": "Indian Rupee",
     "MXN": "Mexican Peso",
-    "XDR": "Special Drawing Rights",
     "TWD": "New Taiwan Dollar",
     "ILS": "Israeli New Sheqel",
     "IDR": "Indonesian Rupiah",
@@ -170,11 +166,11 @@ export const symbols = {
     "SHP": "Saint Helena Pound",
     "FKP": "Falkland Islands Pound",
     "JEP": "Jersey Pound",
-    "GGP": "Guernsey Pound"
+    "GGP": "Guernsey Pound",
+    "BTC": "Bitcoin",
+    "XDR": "Special Drawing Rights",
+    "XAU": "Gold (troy ounce)",
+    "XAG": "Silver (troy ounce)",
 }
 
-let codes_compiler = []
-for (let k in symbols) {
-    codes_compiler = [...codes_compiler, k]
-}
-export const codes = codes_compiler
+export const codes = Object.keys(symbols)

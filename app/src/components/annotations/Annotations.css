@@ -10,17 +10,9 @@
     background-color: var(--background-color);
 }
 
-#annotations p {
+#annotations > p {
     font-family: monospace;
     color: white;
     display: inline;
     font-size: 16px;
-}
-
-a:link {
-    color: rgb(63, 140, 255);
-}
-
-a:visited {
-    color: plum;
 }

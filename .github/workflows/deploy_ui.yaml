@@ -47,5 +47,4 @@ jobs:
         with:
           path: "."
 
-      - run: ls artifact
       - run: aws s3 sync artifact/build s3://currency-exchange-static-ui --delete
