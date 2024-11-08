@@ -12,7 +12,8 @@ export const Country = (props) => {
         EUR: <p> &euro;</p>,
         USD: <p> $</p>,
         GBP: <p> &pound;</p>,
-        JPY: <p> &yen;</p>
+        JPY: <p> &yen;</p>,
+        CNY: <p> &#20803;</p>
     }
 
     useEffect(() => {

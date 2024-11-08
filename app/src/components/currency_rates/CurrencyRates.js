@@ -34,7 +34,7 @@ export const CurrencyRates = (props) => {
                         base={base}
                     />
                     <Country
-                        className={"left " + code2}
+                        className={"right " + code2}
                         img_src={"flags/" + code2 + ".png"}
                         code={code2}
                         country={symbols[code2]}
