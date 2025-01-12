@@ -8,7 +8,8 @@ const dynamodb = new DynamoDBClient()
 
 const ssm_command = new GetParameterCommand({Name: process.env.API_KEY, WithDecryption: true})
 const params = {
-    'access_key': (await ssm.send(ssm_command)).Parameter.Value
+    'app_id': (await ssm.send(ssm_command)).Parameter.Value,
+    'base': 'USD'
 }
 
 const upload_data = async (json) => {
@@ -38,11 +39,11 @@ const upload_data = async (json) => {
     }))
 }
 
-// https://manage.exchangeratesapi.io
+// https://openexchangerates.org/account
 export const handler = () => {
     axios({
-        baseURL: 'http://api.exchangeratesapi.io',
-        url: '/v1/latest',
+        baseURL: 'https://openexchangerates.org',
+        url: '/api/latest.json',
         method: 'get',
         params: params
     })
