@@ -29,6 +29,7 @@ const upload_data = async (json) => {
         itemBase[symbol] = itemLatest[symbol] = {N: json.rates[symbol].toString()}
     }
 
+    console.log("Uploading exchange rates for " + itemBase.timestamp.S)
     await dynamodb.send(new PutItemCommand({
         'TableName': process.env.TABLE_NAME,
         'Item': itemBase
@@ -37,6 +38,7 @@ const upload_data = async (json) => {
         'TableName': process.env.TABLE_NAME,
         'Item': itemLatest
     }))
+    console.log("Successfully uploaded data")
 }
 
 // https://openexchangerates.org/account
