@@ -216,7 +216,7 @@ Resources:
       FlexibleTimeWindow:
         Mode: "OFF"
       Name: !Ref AppName
-      ScheduleExpression: rate(3 hours)
+      ScheduleExpression: rate(1 hours)
       StartDate: "2024-09-21T23:05:00.000Z"
       State: ENABLED
       Target:
