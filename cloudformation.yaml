@@ -217,7 +217,7 @@ Resources:
         Mode: "OFF"
       Name: !Ref AppName
       ScheduleExpression: rate(1 hours)
-      StartDate: "2024-09-21T23:05:00.000Z"
+      StartDate: "2025-01-13T00:05:00.000Z"
       State: ENABLED
       Target:
         Arn: !GetAtt DataLambda.Arn
