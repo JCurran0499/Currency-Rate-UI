@@ -126,6 +126,27 @@ Resources:
         Owner: !Ref Owner
         Project: !Ref Project
 
+  RefreshLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Architectures:
+        - arm64
+      CodeUri: ./lambda/refresh
+      Description: Exchange Rate scheduled data refresh
+      FunctionName: !Sub ${AppName}-Refresh
+      Handler: index.handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ExchangeRateTable
+          API_KEY: currency_exchange_api_access_key
+      MemorySize: 128
+      Runtime: nodejs20.x
+      Role: !GetAtt DataLambdaExecutionRole.Arn
+      Timeout: 300
+      Tags:
+        Owner: !Ref Owner
+        Project: !Ref Project
+
   # DynamoDB
   ExchangeRateTable:
     Type: AWS::DynamoDB::Table
@@ -150,7 +171,7 @@ Resources:
           S3KeyPrefix: AWSDynamoDB/01726956845040-ee9af4ab/data
       ProvisionedThroughput:
         ReadCapacityUnits: 5
-        WriteCapacityUnits: 1
+        WriteCapacityUnits: 3
       TableClass: STANDARD
       TableName: !Ref AppName
       Tags:
@@ -221,5 +242,20 @@ Resources:
       State: ENABLED
       Target:
         Arn: !GetAtt DataLambda.Arn
+        Input: "{}"
+        RoleArn: !GetAtt SchedulerExecutionRole.Arn
+
+  RefreshUpdateScheduler:
+    Type: AWS::Scheduler::Schedule
+    Properties:
+      Description: Invokes the Refresh lambda on a scheduled basis
+      FlexibleTimeWindow:
+        Mode: "OFF"
+      Name: !Sub ${AppName}-Refresh
+      ScheduleExpression: rate(24 hours)
+      StartDate: "2025-01-16T23:30:00.000Z"
+      State: ENABLED
+      Target:
+        Arn: !GetAtt RefreshLambda.Arn
         Input: "{}"
         RoleArn: !GetAtt SchedulerExecutionRole.Arn
