@@ -1,0 +1,11 @@
+{
+    "name": "exchange-rates-refresh",
+    "version": "1.0.0",
+    "main": "index.js",
+    "dependencies": {
+      "@aws-sdk/client-dynamodb": "^3.359.0",
+      "@aws-sdk/client-ssm": "^3.359.0",
+      "axios": "^1.4.0"
+    },
+    "type": "module"
+  }

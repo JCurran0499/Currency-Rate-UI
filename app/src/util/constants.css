@@ -1,10 +1,10 @@
 :root {
-    --background-color: #282828;
+    --background-color: #1b1b1b;
 
     --width-flag: 8%;
     --width-code: 10%;
     --width-name: 36%;
     --width-rate: 23%;
     --width-change: 20%;
-    --width-arrow: 3%:
+    --width-arrow: 3%;
 }

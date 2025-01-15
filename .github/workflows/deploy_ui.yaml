@@ -14,7 +14,13 @@ jobs:
     name: Build Web App
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
+
+      - name: Env
+        run: |
+          cd app
+          mv .env .env.local
+          mv .env.prod .env
 
       - name: Build
         run: |
@@ -22,7 +28,7 @@ jobs:
           npm install
           npm run build
 
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           path: app
 
@@ -37,8 +43,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
       
-      - uses: actions/download-artifact@master
+      - uses: actions/download-artifact@v4
         with:
-          path: artifact
+          path: "."
 
       - run: aws s3 sync artifact/build s3://currency-exchange-static-ui --delete

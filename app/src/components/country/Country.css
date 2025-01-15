@@ -1,12 +1,3 @@
-@import '../../util/constants.css';
-
-#country-row {
-    text-align: center;
-    width: 100%;
-    display: table;
-    border: 0px solid green;
-}
-
 #country {
     display: inline-block;
     height: 100%;
@@ -14,12 +5,12 @@
     width: 44%;
 }
 
-img {
+#country img {
     height: 100%;
     vertical-align: middle;
 }
 
-button {
+#country button {
     height: 40px;
     width: 40px;
     margin: 0;
@@ -29,23 +20,6 @@ button {
     cursor: pointer;
 }
 
-.info {
-    color: white;
-    text-align: right;
-    vertical-align: middle;
-    height: 40px;
-    padding-right: 5px;
-    padding-left: 5px;
-    display: table-cell;
-    border: 0px solid green;
-}
-
-.info > p {
-    font-size: 20px;
-}
-
-/* Spacing */
-
 #country.left {
     margin-right: 4%;
 }
@@ -54,41 +28,58 @@ button {
     margin-left: 4%;
 }
 
+#country > .info {
+    color: white;
+    text-align: right;
+    vertical-align: middle;
+    height: 40px;
+    padding-right: 5px;
+    padding-left: 5px;
+    display: table-cell;
+}
 
-.info.flag {
+#country > .info > p {
+    font-size: 20px;
+}
+
+#country > .info.rate > p {
+    display: inline;
+}
+
+#country > .info.flag {
     text-align: center;
     width: var(--width-flag);
     vertical-align: middle;
 }
 
-.info.code {
+#country > .info.code {
     width: var(--width-code);
     text-align: left;
 }
 
-.info.name {
+#country > .info.name {
     width: var(--width-name);
     text-align: left;
 }
 
-.info.rate {
+#country > .info.rate {
     width: var(--width-rate);
 }
 
-.info.change {
+#country > .info.change {
     width: var(--width-change);
 }
 
-.info.arrow {
+#country > .info.arrow {
     width: var(--width-arrow);
 }
 
 /* Colors */
 
-.info.up {
+#country > .info.up {
     color: green;
 }
 
-.info.down {
+#country > .info.down {
     color: red;
 }

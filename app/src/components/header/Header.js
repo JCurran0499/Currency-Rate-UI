@@ -1,12 +1,12 @@
 import './Header.css'
-import { AiOutlineArrowUp, AiOutlineArrowDown } from 'react-icons/ai'
+import { AiOutlineArrowUp } from 'react-icons/ai'
 
 export const Header = () => {
 
     const SubHeader = (props) => {
         return (
             <div id="subheader" className={props.className}>
-                <div className="info flag"/>
+                <div className="column flag"/>
                 <div className="column code">
                     <p>Code</p>
                 </div>
@@ -16,12 +16,13 @@ export const Header = () => {
                 <div className="column rate">
                     <p>Rate</p>
                 </div>
-                <div className="column change ">
-                    <p>Change</p>
-                </div>
                 <div className="column arrow">
                     <AiOutlineArrowUp/>
                 </div>
+                <div className="column change ">
+                    <p>Change</p>
+                </div>
+                
             </div>
         )
     }

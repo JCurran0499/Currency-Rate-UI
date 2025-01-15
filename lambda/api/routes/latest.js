@@ -22,32 +22,31 @@ const transformData = (itemNow, itemStart) => {
 export const latest = async (req) => {
     console.info("Fetching latest currency data...")
 
-    const offset = Number(req.parameters?.offset || '8')
+    const offset = Number(req.parameters?.offset || '24')
 
     const start = new Date()
     if (start.getMinutes() <= 5) {
         start.setHours(start.getHours() - 1)
     }
-    adjustHours(start, -1)
 
     start.setMinutes(0)
-    start.setHours(start.getHours() - (offset * 3))
+    start.setHours(start.getHours() - offset)
     
-    const requestItems = {}
-    requestItems[process.env.TABLE_NAME] = {
-        Keys: [
-            {
-                'timestamp': {S: 'latest'},
-                'base': {S: 'EUR'}
-            },
-            {
-                'timestamp': {S: formatTimestamp(start)},
-                'base': {S: 'EUR'}
-            }
-        ]
-    }
     const tableReq = new BatchGetItemCommand({
-        RequestItems: requestItems
+        RequestItems: {
+            [process.env.TABLE_NAME]: {
+                Keys: [
+                    {
+                        timestamp: {S: 'latest'},
+                        base: {S: 'USD'}
+                    },
+                    {
+                        timestamp: {S: formatTimestamp(start)},
+                        base: {S: 'USD'}
+                    }
+                ]
+            }
+        }
     })
 
     const resp = await dynamodb.send(tableReq)

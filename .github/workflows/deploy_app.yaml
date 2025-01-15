@@ -23,6 +23,8 @@ jobs:
           npm install
           cd ../data
           npm install
+          cd ../refresh
+          npm install
 
       - uses: actions/upload-artifact@master
         with:
