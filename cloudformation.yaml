@@ -208,7 +208,7 @@ Resources:
           S3KeyPrefix: AWSDynamoDB/01736992324921-0d51fabb/data
       ProvisionedThroughput:
         ReadCapacityUnits: 5
-        WriteCapacityUnits: 3
+        WriteCapacityUnits: 1
       TableClass: STANDARD
       TableName: !Sub ${AppName}-History
       Tags:
