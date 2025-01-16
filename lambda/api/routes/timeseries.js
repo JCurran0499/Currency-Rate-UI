@@ -4,17 +4,17 @@ import { unmarshall } from '@aws-sdk/util-dynamodb'
 const dynamodb = new DynamoDBClient()
 const BLOCK = 50
 
-const formatDate = (date) => {
-    return date.toISOString().slice(0, 10)
+const formatTimestamp = (timestamp) => {
+    return timestamp.toISOString().slice(0, 16) + "Z"
 }
 
-const getRecords = async (dates, code) => {
-    console.info("Fetching historical records!")
+const getRecords = async (timestamps, code) => {
+    console.info("Fetching timeseries records!")
 
     const resp = await dynamodb.send(new BatchGetItemCommand({
         RequestItems: {
             [process.env.TABLE_NAME]: {
-                Keys: dates.map((ts) => {
+                Keys: timestamps.map((ts) => {
                     return {
                         timestamp: {S: ts},
                         base: {S: 'USD'}
@@ -34,31 +34,31 @@ const getRecords = async (dates, code) => {
     )
 }
 
-export const historical = async (req) => {
-    console.info("Fetching historical currency data...")
+export const timeseries = async (req) => {
+    console.info("Fetching recent time series currency data...")
 
     const start = new Date(Date.parse(req.parameters.start))
     const end = new Date(Date.parse(req.parameters.end))
     const code = req.parameters.code
-    const period = Number(req.parameters.period || '1')
+    const period = Number(req.parameters.period || '3')
 
-    let dates = []
+    let timestamps = []
     while (start.getTime() <= end.getTime()) {
-        dates.push(formatDate(start))
-        start.setDate(start.getDate() + period)
+        timestamps.push(formatTimestamp(start))
+        start.setHours(start.getHours() + period)
     }
 
-    console.log(dates)
+    console.log(timestamps)
 
     const promises = []
-    while (dates.length > BLOCK) {
+    while (timestamps.length > BLOCK) {
         promises.push(
-            getRecords(dates.slice(0, BLOCK), code)
+            getRecords(timestamps.slice(0, BLOCK), code)
         )
-       dates = dates.slice(BLOCK)
+        timestamps = timestamps.slice(BLOCK)
     }
     promises.push(
-        getRecords(dates, code)
+        getRecords(timestamps, code)
     )
 
     return (await Promise.all(promises)).flat()

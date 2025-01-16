@@ -1,7 +1,10 @@
 import { DynamoDBClient, BatchGetItemCommand } from '@aws-sdk/client-dynamodb'
-import { adjustHours, formatTimestamp } from '../util/util.js'
 
 const dynamodb = new DynamoDBClient()
+
+const formatTimestamp = (timestamp) => {
+    return timestamp.toISOString().slice(0, 16) + "Z"
+}
 
 const transformData = (itemNow, itemStart) => {
     const data = {
