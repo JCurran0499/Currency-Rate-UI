@@ -327,7 +327,7 @@ Resources:
           Value: !Ref APILambda
       MetricName: Errors
       EvaluationPeriods: 1
-      Period: 900
+      Period: 60
       Statistic: Sum
       Threshold: 1
       Tags:
@@ -350,7 +350,7 @@ Resources:
           Value: !Ref DataLambda
       MetricName: Errors
       EvaluationPeriods: 1
-      Period: 900
+      Period: 600
       Statistic: Sum
       Threshold: 1
       Tags:
@@ -373,7 +373,7 @@ Resources:
           Value: !Ref RefreshLambda
       MetricName: Errors
       EvaluationPeriods: 1
-      Period: 900
+      Period: 1800
       Statistic: Sum
       Threshold: 1
       Tags:
