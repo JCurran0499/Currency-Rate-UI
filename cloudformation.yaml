@@ -297,21 +297,82 @@ Resources:
         Input: "{}"
         RoleArn: !GetAtt SchedulerExecutionRole.Arn
 
+  # SNS
+  AlarmTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: !Sub ${AppName}-Alarms
+      TopicName: !Sub ${AppName}-Alarms
+      Subscription:
+        - Endpoint: "{{resolve:ssm:email_address:1}}"
+          Protocol: email
+      Tags:
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Project
+          Value: !Ref Project
+
   # CloudWatch
+  APIAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref AlarmTopic
+      AlarmDescription: Alerts of errors on the API Lambda
+      AlarmName: !Sub ${AppName}-API-Alarm
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Namespace: AWS/Lambda
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref APILambda
+      MetricName: Errors
+      EvaluationPeriods: 1
+      Period: 900
+      Statistic: Sum
+      Threshold: 1
+      Tags:
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Project
+          Value: !Ref Project
+  
   DataAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      # AlarmActions:
-      #   - test
+      AlarmActions:
+        - !Ref AlarmTopic
       AlarmDescription: Alerts of errors on the Data Lambda
       AlarmName: !Sub ${AppName}-Data-Alarm
       ComparisonOperator: GreaterThanOrEqualToThreshold
+      Namespace: AWS/Lambda
       Dimensions:
         - Name: FunctionName
-          Value: "Exchange-Rates-Data"
-      EvaluationPeriods: 1
+          Value: !Ref DataLambda
       MetricName: Errors
+      EvaluationPeriods: 1
+      Period: 900
+      Statistic: Sum
+      Threshold: 1
+      Tags:
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Project
+          Value: !Ref Project
+
+  RefreshAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref AlarmTopic
+      AlarmDescription: Alerts of errors on the Refresh Lambda
+      AlarmName: !Sub ${AppName}-Refresh-Alarm
+      ComparisonOperator: GreaterThanOrEqualToThreshold
       Namespace: AWS/Lambda
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref RefreshLambda
+      MetricName: Errors
+      EvaluationPeriods: 1
       Period: 900
       Statistic: Sum
       Threshold: 1
