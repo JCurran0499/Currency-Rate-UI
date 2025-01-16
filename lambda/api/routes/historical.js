@@ -13,7 +13,7 @@ const getRecords = async (dates, code) => {
 
     const resp = await dynamodb.send(new BatchGetItemCommand({
         RequestItems: {
-            [process.env.TABLE_NAME]: {
+            [process.env.HISTORY_TABLE_NAME]: {
                 Keys: dates.map((ts) => {
                     return {
                         timestamp: {S: ts},
@@ -29,7 +29,7 @@ const getRecords = async (dates, code) => {
         }
     }))
 
-    return resp.Responses[process.env.TABLE_NAME].map(unmarshall).sort(
+    return resp.Responses[process.env.HISTORY_TABLE_NAME].map(unmarshall).sort(
         (ts1, ts2) => ts1.timestamp.localeCompare(ts2.timestamp)
     )
 }

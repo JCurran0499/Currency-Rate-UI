@@ -89,6 +89,7 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref ExchangeRateTable
+          HISTORY_TABLE_NAME: !Ref ExchangeRateHistoryTable
       Events:
         ApiEvent:
           Type: HttpApi
@@ -138,6 +139,7 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref ExchangeRateTable
+          HISTORY_TABLE_NAME: !Ref ExchangeRateHistoryTable
           API_KEY: currency_exchange_api_access_key
       MemorySize: 128
       Runtime: nodejs20.x
@@ -163,6 +165,9 @@ Resources:
           KeyType: RANGE
       BillingMode: PROVISIONED
       DeletionProtectionEnabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+        RecoveryPeriodInDays: 15
       ImportSourceSpecification:
         InputCompressionType: GZIP
         InputFormat: DYNAMODB_JSON
@@ -174,6 +179,38 @@ Resources:
         WriteCapacityUnits: 3
       TableClass: STANDARD
       TableName: !Ref AppName
+      Tags:
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Project
+          Value: !Ref Project
+
+  ExchangeRateHistoryTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: timestamp
+          AttributeType: S
+        - AttributeName: base
+          AttributeType: S
+      KeySchema:
+        - AttributeName: timestamp
+          KeyType: HASH
+        - AttributeName: base
+          KeyType: RANGE
+      BillingMode: PROVISIONED
+      DeletionProtectionEnabled: true
+      ImportSourceSpecification:
+        InputCompressionType: GZIP
+        InputFormat: DYNAMODB_JSON
+        S3BucketSource:
+          S3Bucket: currency-exchange-db-data
+          S3KeyPrefix: AWSDynamoDB/01736992324921-0d51fabb/data
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 3
+      TableClass: STANDARD
+      TableName: !Sub ${AppName}-History
       Tags:
         - Key: Owner
           Value: !Ref Owner

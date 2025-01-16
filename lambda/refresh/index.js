@@ -12,6 +12,8 @@ const params = {
 }
 
 const delete_data = async (times) => {
+    console.log("Deleting timestamps for " + times[0].slice(0, 10))
+    
     let keys = []
     for (let i = 0; i < times.length; i++) {
         keys.push({
@@ -56,15 +58,17 @@ const upload_data = async (date, json) => {
         item[symbol] = {N: json.rates[symbol].toString()}
     }
     await dynamodb.send(new PutItemCommand({
-        TableName: process.env.TABLE_NAME,
+        TableName: process.env.HISTORY_TABLE_NAME,
         Item: item
     }))
 }
 
 
 export const handler = async () => {
+    const today = new Date().toISOString().slice(0, 10)
+
     let d = new Date()
-    d.setDate(d.getDate() - 180)
+    d.setDate(d.getDate() - 365)
     let date = d.toISOString().slice(0, 10)
 
     let times = []
@@ -75,12 +79,12 @@ export const handler = async () => {
     await delete_data(times)
     await axios({
         baseURL: 'https://openexchangerates.org',
-        url: '/api/historical/' + date + '.json',
+        url: '/api/historical/' + today + '.json',
         method: 'get',
         params: params
     })
     .then((resp) => {
-        upload_data(date, resp.data)
+        upload_data(today, resp.data)
     })
-    console.log("Success! Uploaded " + date)
+    console.log("Success! Uploaded " + today)
 }
