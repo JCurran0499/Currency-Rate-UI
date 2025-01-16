@@ -296,3 +296,27 @@ Resources:
         Arn: !GetAtt RefreshLambda.Arn
         Input: "{}"
         RoleArn: !GetAtt SchedulerExecutionRole.Arn
+
+  # CloudWatch
+  DataAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      # AlarmActions:
+      #   - test
+      AlarmDescription: Alerts of errors on the Data Lambda
+      AlarmName: !Sub ${AppName}-Data-Alarm
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+        - Name: FunctionName
+          Value: "Exchange-Rates-Data"
+      EvaluationPeriods: 1
+      MetricName: Errors
+      Namespace: AWS/Lambda
+      Period: 900
+      Statistic: Sum
+      Threshold: 1
+      Tags:
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Project
+          Value: !Ref Project
