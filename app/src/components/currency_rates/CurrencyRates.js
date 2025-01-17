@@ -9,7 +9,7 @@ import './CurrencyRates.css'
 export const CurrencyRates = (props) => {
     const [rows, handleRows] = useState([])
     const [displayInBaseCurrency, handleDisplayInBaseCurrency] = useState(true)
-    const [base, handleBase] = useState("EUR")
+    const [base, handleBase] = useState("USD")
 
     useEffect(() => {
         if (props.rates.now !== undefined) {

@@ -9,8 +9,8 @@ export const Country = (props) => {
     const [positiveTrend, handlePositiveTrend] = useState(false)
 
     const baseSymbols = {
-        EUR: <p> &euro;</p>,
         USD: <p> $</p>,
+        EUR: <p> &euro;</p>,
         GBP: <p> &pound;</p>,
         JPY: <p> &yen;</p>,
         CNY: <p> &#20803;</p>
